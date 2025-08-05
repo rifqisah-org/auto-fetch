@@ -1,0 +1,63 @@
+name: Wuthering Waves Automation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: 0 17 * * *
+
+jobs:
+  action-preparation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check Git
+        run: |
+          git --version
+
+  auto-fetching:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Save Current Date To GitHub Environment
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Fetch API Data
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.json"
+          save-location: "fetch/wuwa/"
+          save-name: result-${{ env.CURRENT_DATE }}
+      - name: Code File Prettier
+        run: |
+          npx prettier --write fetch/wuwa/**/*.json
+      - name: Commit Changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+          arr[0]="Daily Fetch Commit Automation (Bot) 🏠"
+          arr[1]="Daily Fetch Commit Automation (Bot) 🏘️"
+          arr[2]="Daily Fetch Commit Automation (Bot) 🏡"
+          arr[3]="Daily Fetch Commit Automation (Bot) 🏨"
+          arr[4]="Daily Fetch Commit Automation (Bot) 🏪"
+          arr[5]="Daily Fetch Commit Automation (Bot) 🏦"
+          arr[6]="Daily Fetch Commit Automation (Bot) 🏢"
+          arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
+          rand=$[$RANDOM % ${#arr[@]}]
+
+          git add ./fetch/
+          git commit -m "${arr[$rand]}"
+      - name: GitHub Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          directory: "."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
