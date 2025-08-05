@@ -5,12 +5,12 @@ on:
     branches:
       - main
   schedule:
-    - cron: 0 17 * * *
+    - cron: 0 18 * * *
   workflow_dispatch:
 
 permissions:
   contents: write
-  
+
 jobs:
   action-preparation:
     runs-on: ubuntu-latest

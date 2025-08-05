@@ -10,7 +10,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
   action-preparation:
     runs-on: ubuntu-latest
