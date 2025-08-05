@@ -1,4 +1,4 @@
-name: Genshin Impact Automation
+name: "Honkai: Star Rail Automation"
 
 on:
   push:
