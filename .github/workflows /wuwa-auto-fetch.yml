@@ -1,12 +1,12 @@
 name: Wuthering Waves Automation
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
   schedule:
     - cron: 0 17 * * *
+  workflow_dispatch:
 
 jobs:
   action-preparation:
