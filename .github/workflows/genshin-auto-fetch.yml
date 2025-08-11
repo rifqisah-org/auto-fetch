@@ -3,7 +3,7 @@ name: Genshin Impact Automation
 on:
   push:
     branches:
-      - main
+      - master
   schedule:
     - cron: 0 * * * *
   workflow_dispatch:
@@ -74,6 +74,7 @@ jobs:
           arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
           rand=$[$RANDOM % ${#arr[@]}]
 
+          git pull
           git add ./fetch/genshin/
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
