@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: 0 16 * * *
+    - cron: 0 * * * *
   workflow_dispatch:
 
 permissions:
@@ -36,11 +36,29 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=gopR6Cufr3"
-          save-location: "fetch/genshin/"
+          save-location: "fetch/genshin/temp/"
           save-name: result-${{ env.CURRENT_DATE }}
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/genshin/**/*.json
+      - name: Compare with last file
+        id: compare
+        run: |
+          LAST_FILE=$(ls -t fetch/genshin/*.json 2>/dev/null | head -n 1 || echo "")
+          if [ -n "$LAST_FILE" ]; then
+            if diff -q "$LAST_FILE" fetch/genshin/temp/*.json > /dev/null; then
+              echo "same=true" >> $GITHUB_ENV
+            else
+              echo "same=false" >> $GITHUB_ENV
+            fi
+          else
+            echo "same=false" >> $GITHUB_ENV
+          fi
+      - name: Move new file if different
+        if: env.same == 'false'
+        run: |
+          mkdir -p fetch/genshin
+          mv fetch/genshin/temp/*.json fetch/genshin/
       - name: Commit Changes
         run: |
           git config --local user.name "GitHub Actions"
@@ -56,7 +74,7 @@ jobs:
           arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
           rand=$[$RANDOM % ${#arr[@]}]
 
-          git add ./fetch/
+          git add ./fetch/genshin/
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
         uses: ad-m/github-push-action@v0.6.0
