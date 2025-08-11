@@ -1,9 +1,6 @@
 name: Genshin Impact Automation
 
 on:
-  push:
-    branches:
-      - master
   schedule:
     - cron: 0 * * * *
   workflow_dispatch:
@@ -37,7 +34,7 @@ jobs:
         with:
           endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=gopR6Cufr3"
           save-location: "fetch/genshin/temp/"
-          save-name: result-${{ env.CURRENT_DATE }}
+          save-name: result-temp.json
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/genshin/**/*.json
@@ -46,7 +43,7 @@ jobs:
         run: |
           LAST_FILE=$(ls -t fetch/genshin/*.json 2>/dev/null | head -n 1 || echo "")
           if [ -n "$LAST_FILE" ]; then
-            if diff -q "$LAST_FILE" fetch/genshin/temp/*.json > /dev/null; then
+            if diff -q "$LAST_FILE" fetch/genshin/temp/result-temp.json > /dev/null; then
               echo "same=true" >> $GITHUB_ENV
             else
               echo "same=false" >> $GITHUB_ENV
@@ -58,8 +55,9 @@ jobs:
         if: env.same == 'false'
         run: |
           mkdir -p fetch/genshin
-          mv fetch/genshin/temp/*.json fetch/genshin/
+          cp fetch/genshin/temp/result-temp.json fetch/genshin/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
+        if: env.same == 'false'
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -74,9 +72,10 @@ jobs:
           arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
           rand=$[$RANDOM % ${#arr[@]}]
 
-          git add ./fetch/genshin/
+          git add fetch/genshin/result-${{ env.CURRENT_DATE }}.json
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
+        if: env.same == 'false'
         uses: ad-m/github-push-action@v0.6.0
         with:
           directory: "."

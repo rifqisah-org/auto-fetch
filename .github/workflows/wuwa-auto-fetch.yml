@@ -1,9 +1,6 @@
 name: Wuthering Waves Automation
 
 on:
-  push:
-    branches:
-      - master
   schedule:
     - cron: 30 * * * *
   workflow_dispatch:
@@ -37,7 +34,7 @@ jobs:
         with:
           endpoint: "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.json"
           save-location: "fetch/wuwa/temp/"
-          save-name: result-${{ env.CURRENT_DATE }}
+          save-name: result-temp.json
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/wuwa/**/*.json
@@ -46,7 +43,7 @@ jobs:
         run: |
           LAST_FILE=$(ls -t fetch/wuwa/*.json 2>/dev/null | head -n 1 || echo "")
           if [ -n "$LAST_FILE" ]; then
-            if diff -q "$LAST_FILE" fetch/wuwa/temp/*.json > /dev/null; then
+            if diff -q "$LAST_FILE" fetch/wuwa/temp/result-temp.json > /dev/null; then
               echo "same=true" >> $GITHUB_ENV
             else
               echo "same=false" >> $GITHUB_ENV
@@ -58,8 +55,9 @@ jobs:
         if: env.same == 'false'
         run: |
           mkdir -p fetch/wuwa
-          mv fetch/wuwa/temp/*.json fetch/wuwa/
+          cp fetch/wuwa/temp/result-temp.json fetch/wuwa/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
+        if: env.same == 'false'
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -77,6 +75,7 @@ jobs:
           git add ./fetch/wuwa/
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
+        if: env.same == 'false'
         uses: ad-m/github-push-action@v0.6.0
         with:
           directory: "."
