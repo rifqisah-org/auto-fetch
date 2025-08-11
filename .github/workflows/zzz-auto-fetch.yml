@@ -34,7 +34,7 @@ jobs:
         with:
           endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=U5hbdsT9W7"
           save-location: "fetch/zzz/temp/"
-          save-name: result-temp.json
+          save-name: result-temp
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/zzz/**/*.json

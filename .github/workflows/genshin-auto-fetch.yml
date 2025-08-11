@@ -34,7 +34,7 @@ jobs:
         with:
           endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=gopR6Cufr3"
           save-location: "fetch/genshin/temp/"
-          save-name: result-temp.json
+          save-name: result-temp
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/genshin/**/*.json
@@ -72,7 +72,7 @@ jobs:
           arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
           rand=$[$RANDOM % ${#arr[@]}]
 
-          git add fetch/genshin/result-${{ env.CURRENT_DATE }}.json
+          git add ./fetch/genshin/
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
         if: env.same == 'false'
