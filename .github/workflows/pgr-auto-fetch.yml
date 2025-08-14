@@ -33,8 +33,8 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: "https://prod-alicdn-gamestarter.kurogame.com/pcstarter/prod/game/G143/4/index.json"
-          save-location: "fetch/pgr/temp/"
-          save-name: result-temp
+          save-location: "fetch/pgr/latest/"
+          save-name: result-latest
       - name: Code File Prettier
         run: |
           npx prettier --write fetch/pgr/**/*.json
@@ -42,7 +42,7 @@ jobs:
         id: compare
         run: |
           LAST_FILE=$(find fetch/pgr -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
-          TARGET_FILE="fetch/pgr/temp/result-temp.json"
+          TARGET_FILE="fetch/pgr/latest/result-latest.json"
 
           if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
             if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
@@ -57,7 +57,7 @@ jobs:
         if: env.same == 'false'
         run: |
           mkdir -p fetch/pgr
-          cp fetch/pgr/temp/result-temp.json fetch/pgr/result-${{ env.CURRENT_DATE }}.json
+          cp fetch/pgr/latest/result-latest.json fetch/pgr/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
         if: env.same == 'false'
         run: |
