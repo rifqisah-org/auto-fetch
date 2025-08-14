@@ -41,15 +41,17 @@ jobs:
       - name: Compare with last file
         id: compare
         run: |
-          LAST_FILE=$(ls -t fetch/wuwa/*.json 2>/dev/null | head -n 1 || echo "")
-          if [ -n "$LAST_FILE" ]; then
-            if diff -q "$LAST_FILE" fetch/wuwa/temp/result-temp.json > /dev/null; then
-              echo "same=true" >> $GITHUB_ENV
+          LAST_FILE=$(find fetch/wuwa -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
+          TARGET_FILE="fetch/wuwa/temp/result-temp.json"
+
+          if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
+            if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
+              echo "same=true" >> "$GITHUB_ENV"
             else
-              echo "same=false" >> $GITHUB_ENV
+              echo "same=false" >> "$GITHUB_ENV"
             fi
           else
-            echo "same=false" >> $GITHUB_ENV
+            echo "same=false" >> "$GITHUB_ENV"
           fi
       - name: Move new file if different
         if: env.same == 'false'
