@@ -2,7 +2,7 @@ name: Punishing Gray Raven Automation
 
 on:
   schedule:
-    - cron: 40 6 * * *
+    - cron: 40 6,18 * * *
   workflow_dispatch:
 
 permissions:

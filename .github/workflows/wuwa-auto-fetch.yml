@@ -2,7 +2,7 @@ name: Wuthering Waves Automation
 
 on:
   schedule:
-    - cron: 30 6 * * *
+    - cron: 30 6,18 * * *
   workflow_dispatch:
 
 permissions:
