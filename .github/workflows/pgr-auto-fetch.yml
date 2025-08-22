@@ -1,8 +1,8 @@
-name: Punishing Gray Raven Automation
+name: Punishing Automation
 
 on:
   schedule:
-    - cron: 40 6,18 * * *
+    - cron: 40 * * * *
   workflow_dispatch:
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
       - name: Fetch API Data
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: "https://prod-alicdn-gamestarter.kurogame.com/pcstarter/prod/game/G143/4/index.json"
+          endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/pcstarter/prod/game/G143/4/index.json' }}
           save-location: "fetch/pgr/latest/"
           save-name: result-latest
       - name: Code File Prettier

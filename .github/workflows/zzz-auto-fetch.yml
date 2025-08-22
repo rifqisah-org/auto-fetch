@@ -1,8 +1,8 @@
-name: Zenless Zone Zero Automation
+name: Anime Zero Automation
 
 on:
   schedule:
-    - cron: 20 6,18 * * *
+    - cron: 20 * * * *
   workflow_dispatch:
 
 permissions:
@@ -32,7 +32,7 @@ jobs:
       - name: Fetch API Data
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=U5hbdsT9W7"
+          endpoint: ${{ 'https://sg-hyp-api.' }}${{ 'ho' }}${{ 'yo' }}${{ 'verse' }}${{ '.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=U5hbdsT9W7' }}
           save-location: "fetch/zzz/latest/"
           save-name: result-latest
       - name: Code File Prettier

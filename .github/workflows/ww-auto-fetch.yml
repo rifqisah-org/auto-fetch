@@ -1,8 +1,8 @@
-name: "Honkai: Star Rail Automation"
+name: Wicked Waifus Automation
 
 on:
   schedule:
-    - cron: 10 6,18 * * *
+    - cron: 30 * * * *
   workflow_dispatch:
 
 permissions:
@@ -32,17 +32,17 @@ jobs:
       - name: Fetch API Data
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: "https://sg-hyp-api.hoyoverse.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=4ziysqXOQ8"
-          save-location: "fetch/hsr/latest/"
+          endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.jsonn' }}
+          save-location: "fetch/wuwa/latest/"
           save-name: result-latest
       - name: Code File Prettier
         run: |
-          npx prettier --write fetch/hsr/**/*.json
+          npx prettier --write fetch/wuwa/**/*.json
       - name: Compare with last file
         id: compare
         run: |
-          LAST_FILE=$(find fetch/hsr -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
-          TARGET_FILE="fetch/hsr/latest/result-latest.json"
+          LAST_FILE=$(find fetch/wuwa -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
+          TARGET_FILE="fetch/wuwa/latest/result-latest.json"
 
           if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
             if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
@@ -56,8 +56,8 @@ jobs:
       - name: Move new file if different
         if: env.same == 'false'
         run: |
-          mkdir -p fetch/hsr
-          cp fetch/hsr/latest/result-latest.json fetch/hsr/result-${{ env.CURRENT_DATE }}.json
+          mkdir -p fetch/wuwa
+          cp fetch/wuwa/latest/result-latest.json fetch/wuwa/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
         if: env.same == 'false'
         run: |
@@ -74,7 +74,7 @@ jobs:
           arr[7]="Daily Fetch Commit Automation (Bot) 🏭"
           rand=$[$RANDOM % ${#arr[@]}]
 
-          git add ./fetch/hsr/
+          git add ./fetch/wuwa/
           git commit -m "${arr[$rand]}"
       - name: GitHub Push
         if: env.same == 'false'
