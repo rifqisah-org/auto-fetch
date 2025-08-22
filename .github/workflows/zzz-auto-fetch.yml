@@ -2,7 +2,7 @@ name: Anime Zero Automation
 
 on:
   schedule:
-    - cron: 20 * * * *
+    - cron: 20 */12 * * *
   workflow_dispatch:
 
 permissions:

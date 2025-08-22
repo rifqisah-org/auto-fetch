@@ -2,7 +2,7 @@ name: Wicked Waifus Automation
 
 on:
   schedule:
-    - cron: 30 * * * *
+    - cron: 30 */12 * * *
   workflow_dispatch:
 
 permissions:
