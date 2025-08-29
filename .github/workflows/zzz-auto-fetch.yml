@@ -2,7 +2,7 @@ name: Anime Zero Automation
 
 on:
   schedule:
-    - cron: 20 */12 * * *
+    - cron: 20 * * * *
   workflow_dispatch:
 
 permissions:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   action-preparation:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,7 +19,7 @@ jobs:
           git --version
 
   auto-fetching:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Save Current Date To GitHub Environment
         run: |
