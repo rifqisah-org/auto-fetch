@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   auto-fetching:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Save Current Date To GitHub Environment
         run: |
