@@ -23,7 +23,7 @@ jobs:
       - name: Fetch API Data
         uses: JamesIves/fetch-api-data-action@v2
         with:
-          endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/pcstarter/prod/game/G143/4/index.json' }}
+          endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/launcher/game/G143/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/index.json' }}
           save-location: "fetch/pgr/latest/"
           save-name: result-latest
       - name: Code File Prettier
