@@ -333,7 +333,7 @@
   "RHIOptionSwitch": 1,
   "predownloadSwitch": 1,
   "RHIOptionList": [
-    { "cmdOption": "", "text": {}, "isShow": 0 },
+    { "cmdOption": "-dx12", "text": {}, "isShow": 0 },
     {
       "cmdOption": "-dx11",
       "text": {

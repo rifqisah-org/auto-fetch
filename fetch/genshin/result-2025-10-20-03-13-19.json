@@ -9,6 +9,20 @@
           "package_id": "ScSYQBFhu9",
           "branch": "main",
           "password": "bDL4JUHL625x",
+          "tag": "6.0.0",
+          "diff_tags": ["5.8.0", "5.7.0"],
+          "categories": [
+            { "category_id": "10016", "matching_field": "game" },
+            { "category_id": "10017", "matching_field": "zh-cn" },
+            { "category_id": "10018", "matching_field": "en-us" },
+            { "category_id": "10020", "matching_field": "ja-jp" },
+            { "category_id": "10019", "matching_field": "ko-kr" }
+          ]
+        },
+        "pre_download": {
+          "package_id": "ScSYQBFhu9",
+          "branch": "predownload",
+          "password": "ZOJpUiKu4Sme",
           "tag": "6.1.0",
           "diff_tags": ["6.0.0", "5.8.0"],
           "categories": [
@@ -18,8 +32,7 @@
             { "category_id": "10020", "matching_field": "ja-jp" },
             { "category_id": "10019", "matching_field": "ko-kr" }
           ]
-        },
-        "pre_download": null
+        }
       }
     ]
   }

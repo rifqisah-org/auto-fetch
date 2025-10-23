@@ -9,8 +9,8 @@
           "package_id": "ScSYQBFhu9",
           "branch": "main",
           "password": "bDL4JUHL625x",
-          "tag": "6.1.0",
-          "diff_tags": ["6.0.0", "5.8.0"],
+          "tag": "6.0.0",
+          "diff_tags": ["5.8.0", "5.7.0"],
           "categories": [
             { "category_id": "10016", "matching_field": "game" },
             { "category_id": "10017", "matching_field": "zh-cn" },
