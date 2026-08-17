@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Save Current Date To GitHub Environment
         run: |
-          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -24,18 +24,18 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/launcher/game/G143/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/index.json' }}
-          save-location: "fetch/pgr/latest/"
-          save-name: result-latest
+          save-location: "fetch/pgr/"
+          save-name: latest
       - name: Code File Prettier
         run: |
-          npx prettier --write fetch/pgr/**/*.json
+          npx prettier --write "fetch/pgr/latest.json"
       - name: Compare with last file
         id: compare
         run: |
-          LAST_FILE=$(find fetch/pgr -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
-          TARGET_FILE="fetch/pgr/latest/result-latest.json"
+          TARGET_FILE="fetch/pgr/latest.json"
+          LAST_FILE=$(find fetch/pgr/history -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
 
-          if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
+          if [ -n "$LAST_FILE" ] && [ -f "$LAST_FILE" ]; then
             if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
               echo "same=true" >> "$GITHUB_ENV"
             else
@@ -44,11 +44,11 @@ jobs:
           else
             echo "same=false" >> "$GITHUB_ENV"
           fi
-      - name: Move new file if different
+      - name: Save New History
         if: env.same == 'false'
         run: |
-          mkdir -p fetch/pgr
-          cp fetch/pgr/latest/result-latest.json fetch/pgr/result-${{ env.CURRENT_DATE }}.json
+          mkdir -p fetch/pgr/history
+          cp fetch/pgr/latest.json fetch/pgr/history/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
         if: env.same == 'false'
         run: |

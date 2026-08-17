@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Save Current Date To GitHub Environment
         run: |
-          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -24,18 +24,18 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: ${{ 'https://sg-hyp-api.' }}${{ 'ho' }}${{ 'yo' }}${{ 'verse' }}${{ '.com/hyp/hyp-connect/api/getGameBranches?launcher_id=VYTpXlbWo8&game_ids[]=gopR6Cufr3' }}
-          save-location: "fetch/genshin/latest/"
-          save-name: result-latest
+          save-location: "fetch/genshin/"
+          save-name: latest
       - name: Code File Prettier
         run: |
-          npx prettier --write fetch/genshin/**/*.json
-      - name: Compare with last file
+          npx prettier --write "fetch/genshin/latest.json"
+      - name: Compare with Last History
         id: compare
         run: |
-          LAST_FILE=$(find fetch/genshin -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
-          TARGET_FILE="fetch/genshin/latest/result-latest.json"
+          TARGET_FILE="fetch/genshin/latest.json"
+          LAST_FILE=$(find fetch/genshin/history -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
 
-          if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
+          if [ -n "$LAST_FILE" ] && [ -f "$LAST_FILE" ]; then
             if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
               echo "same=true" >> "$GITHUB_ENV"
             else
@@ -44,11 +44,11 @@ jobs:
           else
             echo "same=false" >> "$GITHUB_ENV"
           fi
-      - name: Move new file if different
+      - name: Save New History
         if: env.same == 'false'
         run: |
-          mkdir -p fetch/genshin
-          cp fetch/genshin/latest/result-latest.json fetch/genshin/result-${{ env.CURRENT_DATE }}.json
+          mkdir -p fetch/genshin/history
+          cp fetch/genshin/latest.json "fetch/genshin/history/result-${{ env.CURRENT_DATE }}.json"
       - name: Commit Changes
         if: env.same == 'false'
         run: |

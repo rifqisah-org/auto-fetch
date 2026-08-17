@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Save Current Date To GitHub Environment
         run: |
-          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_ENV"
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -24,18 +24,18 @@ jobs:
         uses: JamesIves/fetch-api-data-action@v2
         with:
           endpoint: ${{ 'https://prod-alicdn-' }}${{ 'gamestarter.' }}${{ 'ku' }}${{ 'ro' }}${{ 'ga' }}${{ 'me' }}${{ '.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.json' }}
-          save-location: "fetch/wuwa/latest/"
-          save-name: result-latest
+          save-location: "fetch/wuwa/"
+          save-name: latest
       - name: Code File Prettier
         run: |
-          npx prettier --write fetch/wuwa/**/*.json
+          npx prettier --write "fetch/wuwa/latest.json"
       - name: Compare with last file
         id: compare
         run: |
-          LAST_FILE=$(find fetch/wuwa -maxdepth 1 -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
-          TARGET_FILE="fetch/wuwa/latest/result-latest.json"
+          TARGET_FILE="fetch/wuwa/latest.json"
+          LAST_FILE=$(find fetch/wuwa/history -type f -name "*.json" -printf "%T@ %p\n" 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2-)
 
-          if [ -n "$LAST_FILE" ] && [ -f "$TARGET_FILE" ]; then
+          if [ -n "$LAST_FILE" ] && [ -f "$LAST_FILE" ]; then
             if diff -q "$LAST_FILE" "$TARGET_FILE" >/dev/null; then
               echo "same=true" >> "$GITHUB_ENV"
             else
@@ -44,11 +44,11 @@ jobs:
           else
             echo "same=false" >> "$GITHUB_ENV"
           fi
-      - name: Move new file if different
+      - name: Save New History
         if: env.same == 'false'
         run: |
-          mkdir -p fetch/wuwa
-          cp fetch/wuwa/latest/result-latest.json fetch/wuwa/result-${{ env.CURRENT_DATE }}.json
+          mkdir -p fetch/wuwa/history
+          cp fetch/wuwa/latest.json fetch/wuwa/history/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
         if: env.same == 'false'
         run: |
