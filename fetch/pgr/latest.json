@@ -15,26 +15,31 @@
   "default": {
     "cdnList": [
       {
-        "P": 0,
         "K1": 1,
         "K2": 1,
+        "P": 0,
         "url": "https://zspms-volcdn-gamestarter.kurogame.net/"
       },
       {
-        "P": 1677,
         "K1": 1,
         "K2": 1,
+        "P": 13416,
         "url": "https://zspms-txcdn-gamestarter.kurogame.net/"
       },
       {
-        "P": 2177,
         "K1": 1,
         "K2": 1,
+        "P": 2177,
         "url": "https://zspms-akcdn-gamestarter.pgr-game.com/"
       }
     ],
+    "resourcesBasePath": "launcher/game/G143/50015/4.8.0/oRmMLiBkDQtEfVtxfZaQMsqZNkKhUfwt/zip",
     "changelog": {},
-    "changelogVisible": 0,
+    "resources": "launcher/game/G143/50015/4.8.0/oRmMLiBkDQtEfVtxfZaQMsqZNkKhUfwt/resource.json",
+    "resourcesExcludePathNeedUpdate": [
+      "PGR_Data/StreamingAssets/resource/launch/index",
+      "PGR_Data/StreamingAssets/resource/matrix/index"
+    ],
     "config": {
       "indexFileMd5": "1df37c0e4a14155b2758cbef0579ea50",
       "unCompressSize": 71697612108,
@@ -186,14 +191,9 @@
         }
       ]
     },
-    "resources": "launcher/game/G143/50015/4.8.0/oRmMLiBkDQtEfVtxfZaQMsqZNkKhUfwt/resource.json",
-    "resourcesBasePath": "launcher/game/G143/50015/4.8.0/oRmMLiBkDQtEfVtxfZaQMsqZNkKhUfwt/zip",
     "resourcesExcludePath": ["PGR_Data/StreamingAssets/resource"],
-    "resourcesExcludePathNeedUpdate": [
-      "PGR_Data/StreamingAssets/resource/launch/index",
-      "PGR_Data/StreamingAssets/resource/matrix/index"
-    ],
-    "version": "4.8.0"
+    "version": "4.8.0",
+    "changelogVisible": 0
   },
   "RHIOptionSwitch": 0,
   "predownloadSwitch": 1,
