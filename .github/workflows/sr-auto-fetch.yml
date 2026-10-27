@@ -48,7 +48,7 @@ jobs:
         if: env.same == 'false'
         run: |
           mkdir -p fetch/hsr/history
-          cp fetch/hsr/latest.json fetch/hsr/histroy/result-${{ env.CURRENT_DATE }}.json
+          cp fetch/hsr/latest.json fetch/hsr/history/result-${{ env.CURRENT_DATE }}.json
       - name: Commit Changes
         if: env.same == 'false'
         run: |
