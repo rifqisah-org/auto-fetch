@@ -9,8 +9,8 @@
           "package_id": "PePf9OoV54",
           "branch": "main",
           "password": "E6RCs6eKqXNC",
-          "tag": "4.4.0",
-          "diff_tags": ["4.3.0", "4.2.0"],
+          "tag": "4.6.0",
+          "diff_tags": ["4.5.0"],
           "categories": [
             {
               "category_id": "10049",
@@ -43,7 +43,7 @@
               "scenarios": ["CATEGORY_SCENARIO_FULL"]
             }
           ],
-          "required_client_version": ""
+          "required_client_version": "1.16.1.364"
         },
         "pre_download": null,
         "enable_base_pkg_predownload": false
